@@ -1,0 +1,5 @@
+<p class="fields">
+  <%= f.text_field :hostname %>
+  <%= f.hidden_field :_destroy %>
+  <%= link_to refinery_icon_tag('delete.png'), "#", onclick: "remove_fields(this)" %>
+</p>

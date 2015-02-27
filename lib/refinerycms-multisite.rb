@@ -1,20 +1,28 @@
-
-require 'refinerycms-base'
+require 'refinerycms-core'
+require 'refinerycms-multisite/version'
 
 module Refinery
   module Sites
     class Engine < Rails::Engine
-      initializer "static assets" do |app|
-        app.middleware.insert_after ::ActionDispatch::Static, ::ActionDispatch::Static, "#{root}/public"
+
+      class << self
+        attr_accessor :root
+        def root
+          @root ||= Pathname.new(File.expand_path('../../', __FILE__))
+        end
       end
 
-      config.after_initialize do
-        Refinery::Plugin.register do |plugin|
-          plugin.name = "sites"
-          plugin.activity = {
-            :class => Site,
-            :title => 'name'
-          }
+      class Engine < ::Rails::Engine
+        isolate_namespace ::Refinery
+
+        initializer "init plugin", :after => :set_routes_reloader do |app|
+          ::Refinery::Plugin.register do |plugin|
+            plugin.pathname = root
+            plugin.name = 'refinery_sites'
+            plugin.url = app.routes.url_helpers.admin_sites_path
+            #plugin.version = Refinerycms::Multisite::VERSION
+            plugin.menu_match = /refinery\/sites$/
+          end
         end
       end
     end
@@ -25,8 +33,6 @@ module Refinery
 
     included do
       belongs_to :page
-      attr_accessible :name, :page_id, :stylesheet, :hostnames,
-          :hostnames_attributes
 
       has_many :hostnames, :dependent => :destroy
 
@@ -53,7 +59,7 @@ end
 module PagesControllerSite
   def home_with_site
     if (@site)
-      @page = Page.find(@site.page_id)
+      @page = Refinery::Page.find(@site.page_id)
       if @page.try(:live?) || (refinery_user? && current_user.authorized_plugins.include?("refinery_pages"))
         # if the admin wants this to be a "placeholder" page which goes to its first child, go to that instead.
         if @page.skip_to_first_child && (first_live_child = @page.children.order('lft ASC').live.first).present?

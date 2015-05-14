@@ -25,17 +25,17 @@ Gem::Specification.new do |s|
     s.specification_version = 4
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
-      s.add_runtime_dependency(%q<refinerycms-pages>, ["~> 2.1"])
-      s.add_development_dependency(%q<refinerycms-testing>, ["~> 2.1"])
-      s.add_development_dependency(%q<shoulda-matchers>, ["~> 2.5"])
+      s.add_runtime_dependency(%q<refinerycms-pages>, ["~> 3"])
+      s.add_development_dependency(%q<refinerycms-testing>, ["~> 3"])
+      s.add_development_dependency(%q<shoulda-matchers>, ["~> 3"])
     else
-      s.add_dependency(%q<refinerycms-pages>, ["~> 2.1"])
-      s.add_dependency(%q<refinerycms-testing>, ["~> 2.1"])
-      s.add_dependency(%q<shoulda-matchers>, ["~> 2.5"])
+      s.add_dependency(%q<refinerycms-pages>, ["~> 3"])
+      s.add_dependency(%q<refinerycms-testing>, ["~> 3"])
+      s.add_dependency(%q<shoulda-matchers>, ["~> 3"])
     end
   else
-    s.add_dependency(%q<refinerycms-pages>, ["~> 2.1"])
-    s.add_dependency(%q<refinerycms-testing>, ["~> 2.1"])
-    s.add_dependency(%q<shoulda-matchers>, ["~> 2.5"])
+    s.add_dependency(%q<refinerycms-pages>, ["~> 3"])
+    s.add_dependency(%q<refinerycms-testing>, ["~> 3"])
+    s.add_dependency(%q<shoulda-matchers>, ["~> 3"])
   end
 end
